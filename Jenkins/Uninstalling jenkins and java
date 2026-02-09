@@ -1,0 +1,77 @@
+Uninstall Jenkins
+
+1️⃣ Remove Jenkins package (if installed)
+sudo apt remove --purge jenkins -y
+
+This removes:
+Jenkins
+Config files
+(Optional cleanup)
+
+sudo apt autoremove -y
+
+2️⃣ Remove Jenkins APT repository
+Delete the repo file you added:
+
+sudo rm /etc/apt/sources.list.d/jenkins.list
+
+3️⃣ Remove Jenkins signing key
+Delete the keyring file:
+
+sudo rm /etc/apt/keyrings/jenkins-keyring.asc
+
+#(If the directory is now empty and you want it gone)
+#sudo rmdir /etc/apt/keyrings 2>/dev/null
+4️⃣ Update APT cache
+sudo apt update
+
+This refreshes package lists without Jenkins.
+
+5️⃣ (Optional) Remove Jenkins user & data completely
+⚠️ Only do this if you don’t need Jenkins data.
+sudo deluser jenkins
+sudo rm -rf /var/lib/jenkins
+sudo rm -rf /var/log/jenkins
+sudo rm -rf /etc/default/jenkins
+
+
+6️⃣ Verify Jenkins is fully removed
+which jenkins
+systemctl status jenkins
+apt policy jenkins
+=======================================================================
+Uninstall java
+
+
+1️⃣ Remove OpenJDK 21 and fontconfig
+sudo apt remove --purge openjdk-21-jre fontconfig -y
+
+
+2️⃣ Remove leftover dependencies
+sudo apt autoremove -y
+
+
+3️⃣ Verify Java is removed
+java -version
+========================================================================
+Claude
+To reverse what these commands did:
+bash
+# Remove the installed packages
+sudo apt remove openjdk-21-jre fontconfig
+
+# Optional: Also remove dependencies that are no longer needed
+sudo apt autoremove
+
+# Verify Java is removed
+java -version
+What this does:
+apt remove uninstalls the packages you installed
+apt autoremove cleans up any dependencies that were installed alongside them but are no longer needed
+The final java -version should show an error or "command not found" if Java was successfully removed
+Note: The apt update command just refreshed your package list - there's nothing to "undo" for that since it didn't install anything.
+If you want to be more thorough and remove configuration files too, you can use:
+bash
+sudo apt purge openjdk-21-jre fontconfig
+sudo apt autoremove
+The difference is that purge removes both the package and its configuration files, while remove only removes the package itself.
